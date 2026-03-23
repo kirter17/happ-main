@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happ</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&family=Vazirmatn:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -25,6 +25,8 @@
 }
 
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;cursor:none}
+[lang="fa"]{--sans:'Vazirmatn',system-ui,sans-serif}
+[lang="zh"]{--sans:'Noto Sans SC','DM Sans',system-ui,sans-serif}
 
 /* Cursor */
 #cur{position:fixed;width:7px;height:7px;border-radius:50%;background:var(--purple);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform 0.08s}
@@ -460,7 +462,11 @@ footer{animation:up 0.38s 0.22s both}
       <div class="mx" onclick="closeM('sup')">✕</div>
     </div>
     <div class="mbody">
-      <p class="mdesc" id="sd-text">Выберите удобный способ связи. Telegram-чат — для быстрых вопросов, email — для подробных обращений.</p>
+      <p class="mdesc" id="sd-text">Вы можете решить свой вопрос быстро и бесплатно через нашего ИИ-бота — или обратиться за платной помощью к оператору.</p>
+      <button class="btn-p" onclick="window.open('https://t.me/happ_bot','_blank')">
+        <span id="sb1">Запустить ИИ-бота</span>
+        <span>→</span>
+      </button>
       <a class="contact-item" href="https://t.me/happ_chat" target="_blank">
         <div class="contact-ic">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
@@ -471,25 +477,9 @@ footer{animation:up 0.38s 0.22s both}
         </div>
         <span class="contact-arr">↗</span>
       </a>
-      <a class="contact-item" href="https://t.me/happ_proxy" target="_blank">
-        <div class="contact-ic">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
-        </div>
-        <div class="contact-body">
-          <div class="contact-name" id="sc-ch">Telegram-канал</div>
-          <div class="contact-sub">@HAPP_PROXY · НОВОСТИ И ОБНОВЛЕНИЯ</div>
-        </div>
-        <span class="contact-arr">↗</span>
-      </a>
-      <a class="contact-item" href="mailto:support@happ.su">
-        <div class="contact-ic">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-        </div>
-        <div class="contact-body">
-          <div class="contact-name" id="sc-em">Email</div>
-          <div class="contact-sub">SUPPORT@HAPP.SU · ПОДРОБНЫЕ ОБРАЩЕНИЯ</div>
-        </div>
-        <span class="contact-arr">↗</span>
+      <a class="btn-s" href="mailto:support@happ.su" style="text-decoration:none">
+        <span id="sc-em">Email</span>
+        <span style="font-family:var(--mono);font-size:11px;opacity:0.4">support@happ.su</span>
       </a>
     </div>
   </div>
@@ -637,6 +627,21 @@ function closeM(id){document.getElementById('ov-'+id).classList.remove('open');d
 function cls(e,id){if(e.target===document.getElementById('ov-'+id))closeM(id)}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')['dl','doc','sup','don'].forEach(closeM)})
 
+// RTL row swap (Download ↔ Donate)
+function applyRTLSwap(isRTL){
+  const actions=document.querySelector('.actions');
+  const dlRow=actions.querySelector('.row[onclick*="dl"]');
+  const donRow=actions.querySelector('.row[onclick*="don"]');
+  if(!dlRow||!donRow)return;
+  if(isRTL){
+    actions.insertBefore(donRow,actions.firstChild);
+    actions.appendChild(dlRow);
+  }else{
+    actions.insertBefore(dlRow,actions.firstChild);
+    actions.appendChild(donRow);
+  }
+}
+
 // i18n
 const T={
   ru:{lsub:'Proxy Utility',badge:'XRAY CORE · КРОССПЛАТФОРМЕННЫЙ',h1:'Прокси-клиент',h2:'для всех платформ',
@@ -653,7 +658,7 @@ const T={
     sb1:'Запустить ИИ-бота',sb2:'Связаться с оператором',sbBadge:'ПЛАТНО',
     mnDon:'04 — ДОНАТЫ',mtDon:'Поддержать Happ',
     ddText:'Мы — независимый проект. Ваше пожертвование на любую сумму помогает нам оплачивать серверы и развивать продукт. Спасибо!',
-    dc:'Карты МИР / Visa',dcr:'Криптовалюта',dir:'ltr'},
+    dc:'Карты МИР / Visa',dcr:'Криптовалюта',scTg:'Telegram-чат',scEm:'Email',dir:'ltr'},
   en:{lsub:'Proxy Utility',badge:'XRAY CORE · CROSS-PLATFORM',h1:'Proxy client',h2:'for every platform',
     desc:'Connect to your own proxy servers on any device. No middlemen, no third-party servers.',
     rnDl:'Download',rhDl:'6 platforms',rnDoc:'Documentation',rhDoc:'2 sections',
@@ -668,7 +673,7 @@ const T={
     sb1:'Launch AI bot',sb2:'Contact operator',sbBadge:'PAID',
     mnDon:'04 — DONATE',mtDon:'Support Happ',
     ddText:"We're an independent project. Any donation helps us pay for servers and keep building. Thank you!",
-    dc:'Card (MIR / Visa)',dcr:'Cryptocurrency',dir:'ltr'},
+    dc:'Card (MIR / Visa)',dcr:'Cryptocurrency',scTg:'Telegram chat',scEm:'Email',dir:'ltr'},
   fa:{lsub:'ابزار پروکسی',badge:'هسته XRAY · چندسکویی',h1:'کلاینت پروکسی',h2:'برای همه پلتفرم‌ها',
     desc:'به سرورهای پروکسی خود از هر دستگاهی متصل شوید. بدون واسطه، بدون سرور شخص ثالث.',
     rnDl:'دانلود',rhDl:'۶ پلتفرم',rnDoc:'مستندات',rhDoc:'۲ بخش',
@@ -683,7 +688,7 @@ const T={
     sb1:'راه‌اندازی ربات هوش مصنوعی',sb2:'تماس با اپراتور',sbBadge:'پولی',
     mnDon:'۰۴ — کمک مالی',mtDon:'از Happ حمایت کنید',
     ddText:'ما یک پروژه مستقل هستیم. هر مبلغی به ما کمک می‌کند سرورها را نگه داریم و محصول را توسعه دهیم.',
-    dc:'کارت بانکی (MIR / Visa)',dcr:'ارز دیجیتال',dir:'rtl'},
+    dc:'کارت بانکی (MIR / Visa)',dcr:'ارز دیجیتال',scTg:'چت تلگرام',scEm:'ایمیل',dir:'rtl'},
   zh:{lsub:'代理工具',badge:'XRAY 核心 · 跨平台',h1:'代理客户端',h2:'支持全平台',
     desc:'在任何设备上连接到您自己的代理服务器。无中间商，无第三方服务器。',
     rnDl:'下载',rhDl:'6 个平台',rnDoc:'文档',rhDoc:'2 个章节',
@@ -698,7 +703,7 @@ const T={
     sb1:'启动 AI 机器人',sb2:'联系客服',sbBadge:'付费',
     mnDon:'04 — 捐赠',mtDon:'支持 Happ',
     ddText:'我们是独立项目。任何捐款都有助于支付服务器费用并持续开发。感谢！',
-    dc:'银行卡（MIR / Visa）',dcr:'加密货币',dir:'ltr'}
+    dc:'银行卡（MIR / Visa）',dcr:'加密货币',scTg:'Telegram 群',scEm:'邮件',dir:'ltr'}
 };
 
 function L(l){
@@ -715,10 +720,11 @@ function L(l){
   s('mn-doc',t.mnDoc);s('mt-doc',t.mtDoc);
   s('do-u',t.doU);s('do-us',t.doUS);s('do-d',t.doD);s('do-ds',t.doDS);
   s('mn-sup',t.mnSup);s('mt-sup',t.mtSup);s('sd-text',t.sdText);
-  s('sb1',t.sb1);s('sb2',t.sb2);s('sb-badge',t.sbBadge);
+  s('sb1',t.sb1);s('sc-tg',t.scTg);s('sc-em',t.scEm);
   s('mn-don',t.mnDon);s('mt-don',t.mtDon);s('dd-text',t.ddText);
   s('dc',t.dc);s('dcr',t.dcr);
   ['dl','doc','sup','don'].forEach(closeM);
+  applyRTLSwap(t.dir==='rtl');
 }
 </script>
 </body>
