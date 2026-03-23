@@ -277,6 +277,10 @@ footer{
 .contact-sub{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:2px;letter-spacing:0.4px}
 .contact-arr{padding-right:14px;font-family:var(--mono);font-size:11px;color:var(--text3)}
 .contact-item:hover .contact-arr{color:var(--purple)}
+.contact-active{border-color:rgba(124,111,238,0.45);background:rgba(124,111,238,0.06)}
+.contact-active:hover{border-color:rgba(124,111,238,0.65);background:rgba(124,111,238,0.11)}
+.contact-active .contact-ic{border-right-color:rgba(124,111,238,0.25)}
+.contact-active:hover .contact-ic{border-right-color:rgba(124,111,238,0.35)}
 [dir="rtl"] .contact-ic{border-right:none;border-left:1px solid var(--line)}
 [dir="rtl"] .contact-item:hover .contact-ic{border-left-color:rgba(124,111,238,0.2)}
 
@@ -316,7 +320,7 @@ footer{
   .ft-link{font-size:10px;padding:4px 8px}
   #cur,#glow{display:none}
   html,body{cursor:auto}
-  .lb,.row,.pf,.dopt,.ditem,.mx,.btn-p,.btn-s{cursor:pointer}
+  .lb,.row,.pf,.dopt,.ditem,.mx,.contact-item{cursor:pointer}
 }
 
 @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -474,10 +478,16 @@ footer{animation:up 0.38s 0.22s both}
     </div>
     <div class="mbody">
       <p class="mdesc" id="sd-text">Вы можете решить свой вопрос быстро и бесплатно через нашего ИИ-бота — или обратиться за платной помощью к оператору.</p>
-      <button class="btn-p" onclick="window.open('https://t.me/happ_bot','_blank')">
-        <span id="sb1">Запустить ИИ-бота</span>
-        <span>→</span>
-      </button>
+      <a class="contact-item contact-active" href="https://t.me/happ_bot" target="_blank">
+        <div class="contact-ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple)"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        </div>
+        <div class="contact-body">
+          <div class="contact-name" id="sb1">Запустить ИИ-бота</div>
+          <div class="contact-sub">БЕСПЛАТНО · БЫСТРО</div>
+        </div>
+        <span class="contact-arr" style="color:var(--purple)">↗</span>
+      </a>
       <a class="contact-item" href="https://t.me/happ_chat" target="_blank">
         <div class="contact-ic">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
@@ -488,9 +498,15 @@ footer{animation:up 0.38s 0.22s both}
         </div>
         <span class="contact-arr">↗</span>
       </a>
-      <a class="btn-s" href="mailto:support@happ.su" style="text-decoration:none">
-        <span id="sc-em">Email</span>
-        <span style="font-family:var(--mono);font-size:11px;opacity:0.4">support@happ.su</span>
+      <a class="contact-item" href="mailto:support@happ.su">
+        <div class="contact-ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div class="contact-body">
+          <div class="contact-name" id="sc-em">Email</div>
+          <div class="contact-sub">SUPPORT@HAPP.SU</div>
+        </div>
+        <span class="contact-arr">↗</span>
       </a>
     </div>
   </div>
