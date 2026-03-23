@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happ</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#080A0F;
+  --surface:#0D1018;
+  --card:#111520;
+  --line:rgba(255,255,255,0.06);
+  --line2:rgba(255,255,255,0.11);
+  --purple:#7C6FEE;
+  --purple-dim:rgba(124,111,238,0.1);
+  --purple-glow:rgba(124,111,238,0.05);
+  --text:#E8EAF2;
+  --text2:#555A75;
+  --text3:#252A3C;
+  --mono:'DM Mono',monospace;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;cursor:none}
+
+/* Cursor */
+#cur{position:fixed;width:7px;height:7px;border-radius:50%;background:var(--purple);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform 0.08s}
+#glow{position:fixed;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,111,238,0.055) 0%,transparent 60%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left 0.7s cubic-bezier(0.23,1,0.32,1),top 0.7s cubic-bezier(0.23,1,0.32,1)}
+
+.wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;max-width:760px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+
+/* ── HEADER ── */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 32px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:50;
+  background:rgba(8,10,15,0.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text)}
+.lmark{width:24px;height:24px;border-radius:6px;background:var(--purple);display:flex;align-items:center;justify-content:center}
+.lname{font-size:14px;font-weight:500;letter-spacing:-0.2px}
+.ldot{color:var(--text3);margin:0 1px}
+.lsub{font-family:var(--mono);font-size:12px;color:var(--text2);letter-spacing:0.3px}
+
+.langs{display:flex;gap:1px}
+.lb{font-family:var(--mono);font-size:12px;padding:6px 12px;border:none;background:transparent;color:var(--text2);cursor:none;border-radius:5px;transition:all 0.13s;letter-spacing:0.3px}
+.lb:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.lb.on{color:var(--purple);background:var(--purple-dim)}
+
+/* ── HERO ── */
+.hero{
+  padding:52px 32px 48px;
+  border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+}
+.hero-left{display:flex;flex-direction:column;gap:18px}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--purple-dim);border:1px solid rgba(124,111,238,0.22);
+  border-radius:100px;padding:4px 12px 4px 8px;align-self:flex-start;
+}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:#3DD98A;flex-shrink:0;box-shadow:0 0 6px rgba(61,217,138,0.6)}
+.hero-badge-text{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:1px}
+
+.hero-title{
+  font-size:clamp(36px,6vw,58px);
+  font-weight:300;
+  letter-spacing:-2px;
+  line-height:1;
+  color:var(--text);
+}
+.hero-title em{font-style:italic;color:var(--purple);font-weight:300}
+
+.hero-desc{
+  font-size:13px;color:var(--text2);line-height:1.7;
+  max-width:340px;
+}
+
+.hero-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-bottom:2px;
+}
+.hero-plat-grid{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hplat-row{display:flex;gap:4px}
+.hplat{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.5px;
+  color:var(--text2);border:1px solid var(--line2);border-radius:4px;padding:4px 9px;
+}
+
+/* ── ACTIONS ── */
+.actions{flex:1}
+
+.row{
+  border-bottom:1px solid var(--line);
+  cursor:none;
+  transition:background 0.16s;
+}
+.row:hover{background:rgba(255,255,255,0.018)}
+.row:last-child{border-bottom:none}
+
+.row-head{
+  display:flex;align-items:center;gap:0;
+  padding:0 32px;height:66px;
+}
+.row-num{font-family:var(--mono);font-size:12px;color:var(--text3);width:28px;flex-shrink:0;letter-spacing:0.5px}
+.row-name{font-size:16px;font-weight:400;letter-spacing:-0.3px;flex:1;color:rgba(232,234,242,0.65);transition:color 0.14s}
+.row:hover .row-name{color:var(--text)}
+
+.row-hint{font-family:var(--mono);font-size:12px;color:var(--text2);margin-right:14px;letter-spacing:0.2px;opacity:0;transition:opacity 0.18s;white-space:nowrap}
+.row:hover .row-hint{opacity:1}
+
+.row-kbd{
+  font-family:var(--mono);font-size:10px;color:var(--text3);
+  border:1px solid var(--text3);border-radius:4px;padding:2px 6px;
+  margin-right:14px;letter-spacing:0.5px;flex-shrink:0;
+  transition:color 0.14s,border-color 0.14s;
+}
+.row:hover .row-kbd{color:var(--text2);border-color:var(--text2)}
+
+.row-arr{font-size:14px;color:var(--text3);transition:color 0.14s,transform 0.14s}
+.row:hover .row-arr{color:var(--purple);transform:translate(2px,-2px)}
+
+/* ── FOOTER ── */
+footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 32px;border-top:1px solid var(--line);
+}
+.ft{font-family:var(--mono);font-size:12px;color:var(--text3);letter-spacing:0.3px}
+.ft-links{display:flex;gap:6px}
+.ft-link{font-family:var(--mono);font-size:12px;color:var(--text2);text-decoration:none;letter-spacing:0.3px;transition:color 0.13s;padding:5px 10px;border:1px solid var(--line);border-radius:6px}
+.ft-link:hover{color:var(--purple);border-color:rgba(124,111,238,0.3)}
+
+/* ── OVERLAY ── */
+.ov{
+  position:fixed;inset:0;
+  background:rgba(6,8,14,0.78);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.22s;
+}
+.ov.open{opacity:1;pointer-events:all}
+
+/* ── MODAL ── */
+.modal{
+  background:var(--card);
+  border:1px solid var(--line2);
+  border-radius:18px;
+  width:100%;max-width:460px;
+  transform:translateY(16px) scale(0.98);
+  transition:transform 0.3s cubic-bezier(0.34,1.45,0.64,1);
+  overflow:hidden;
+}
+.ov.open .modal{transform:none}
+
+.mhead{
+  display:flex;align-items:stretch;
+  border-bottom:1px solid var(--line);
+}
+.mhead-body{flex:1;padding:22px 26px}
+.mnum{font-family:var(--mono);font-size:12px;color:var(--text2);letter-spacing:1.5px;margin-bottom:6px}
+.mtitle{font-size:19px;font-weight:500;letter-spacing:-0.4px}
+
+.mx{
+  width:52px;flex-shrink:0;border-left:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;font-size:14px;color:var(--text2);
+  transition:background 0.13s,color 0.13s;
+}
+.mx:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+
+.mbody{padding:18px 26px 26px;display:flex;flex-direction:column;gap:7px}
+
+/* Platform rows */
+.pf{
+  display:flex;align-items:center;
+  border:1px solid var(--line);border-radius:10px;
+  text-decoration:none;color:var(--text);cursor:none;
+  transition:border-color 0.13s,background 0.13s;overflow:hidden;
+}
+.pf:hover{border-color:rgba(124,111,238,0.35);background:var(--purple-dim)}
+.pf-ic{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border-right:1px solid var(--line)}
+.pf:hover .pf-ic{border-right-color:rgba(124,111,238,0.2)}
+.pf-body{flex:1;padding:0 14px}
+.pf-name{font-size:13px;font-weight:500}
+.pf-sub{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:0.4px}
+.pf-arr{padding-right:14px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.pf:hover .pf-arr{color:var(--purple)}
+
+/* Doc opts */
+.dopt{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  text-decoration:none;color:var(--text);cursor:none;
+  transition:border-color 0.13s,background 0.13s;
+}
+.dopt:hover{border-color:rgba(124,111,238,0.35);background:var(--purple-dim)}
+.dopt-name{font-size:13px;font-weight:500;margin-bottom:3px}
+.dopt-sub{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:0.4px}
+.dopt-arr{font-family:var(--mono);font-size:11px;color:var(--text3);flex-shrink:0}
+.dopt:hover .dopt-arr{color:var(--purple)}
+
+/* Support */
+.mdesc{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:4px}
+.btn-p{
+  display:flex;justify-content:space-between;align-items:center;
+  width:100%;padding:13px 18px;border-radius:10px;
+  font-family:var(--sans);font-size:13px;font-weight:500;cursor:none;
+  background:var(--purple);color:#fff;border:none;
+  box-shadow:0 4px 20px rgba(124,111,238,0.3);
+  transition:filter 0.13s;
+}
+.btn-p:hover{filter:brightness(1.1)}
+.btn-s{
+  display:flex;justify-content:space-between;align-items:center;
+  width:100%;padding:13px 18px;border-radius:10px;
+  font-family:var(--sans);font-size:13px;font-weight:400;cursor:none;
+  background:transparent;color:var(--text);border:1px solid var(--line2);
+  transition:border-color 0.13s,background 0.13s;
+}
+.btn-s:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.16)}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;opacity:0.45;border:1px solid currentColor;border-radius:3px;padding:3px 7px}
+
+/* Donate */
+.ditem{
+  display:flex;align-items:center;
+  border:1px solid var(--line);border-radius:10px;
+  text-decoration:none;color:var(--text);cursor:none;
+  transition:border-color 0.13s,background 0.13s;overflow:hidden;
+}
+.ditem:hover{border-color:rgba(124,111,238,0.35);background:var(--purple-dim)}
+.dic{width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border-right:1px solid var(--line)}
+.ditem:hover .dic{border-right-color:rgba(124,111,238,0.2)}
+.dbody{flex:1;padding:0 14px}
+.dname{font-size:13px;font-weight:500}
+.dsub{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:0.4px}
+.darr{padding-right:14px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.ditem:hover .darr{color:var(--purple)}
+
+/* RTL */
+[dir="rtl"] .pf-ic{border-right:none;border-left:1px solid var(--line)}
+[dir="rtl"] .pf:hover .pf-ic{border-left-color:rgba(124,111,238,0.2)}
+[dir="rtl"] .dic{border-right:none;border-left:1px solid var(--line)}
+[dir="rtl"] .ditem:hover .dic{border-left-color:rgba(124,111,238,0.2)}
+[dir="rtl"] .mx{border-left:none;border-right:1px solid var(--line)}
+[dir="rtl"] .hero-right{align-items:flex-start}
+[dir="rtl"] .hplat-row{flex-direction:row-reverse}
+[dir="rtl"] .hero-badge{align-self:flex-start}
+[dir="rtl"] .ft-links{flex-direction:row-reverse}
+
+/* Contact channels */
+.contact-item{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--text);transition:border-color 0.13s,background 0.13s;overflow:hidden;cursor:none}
+.contact-item:hover{border-color:rgba(124,111,238,0.35);background:var(--purple-dim)}
+.contact-ic{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-right:1px solid var(--line)}
+.contact-item:hover .contact-ic{border-right-color:rgba(124,111,238,0.2)}
+.contact-body{flex:1;padding:0 14px}
+.contact-name{font-size:13px;font-weight:500}
+.contact-sub{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:2px;letter-spacing:0.4px}
+.contact-arr{padding-right:14px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.contact-item:hover .contact-arr{color:var(--purple)}
+[dir="rtl"] .contact-ic{border-right:none;border-left:1px solid var(--line)}
+[dir="rtl"] .contact-item:hover .contact-ic{border-left-color:rgba(124,111,238,0.2)}
+
+/* Crypto copy rows */
+.crypto-wrap{display:flex;flex-direction:column;gap:7px}
+.crypto-row{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.crypto-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.crypto-coin{font-size:13px;font-weight:500;flex:1}
+.crypto-net{font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:0.4px}
+.crypto-addr-row{display:flex;align-items:stretch}
+.crypto-addr{flex:1;padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:0.3px;word-break:break-all;line-height:1.55}
+.copy-btn{flex-shrink:0;width:44px;border:none;border-left:1px solid var(--line);background:transparent;color:var(--text2);cursor:none;display:flex;align-items:center;justify-content:center;transition:background 0.13s,color 0.13s}
+.copy-btn:hover{background:rgba(255,255,255,0.04);color:var(--purple)}
+.copy-btn.copied{color:#3DD98A}
+
+/* Platform auto-detect */
+.pf.detected{border-color:rgba(124,111,238,0.4);background:var(--purple-dim)}
+.detected-badge{font-family:var(--mono);font-size:9px;color:var(--purple);letter-spacing:0.5px;background:var(--purple-dim);border:1px solid rgba(124,111,238,0.3);border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:middle}
+
+/* Toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:var(--text);z-index:9999;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Mobile */
+@media(max-width:580px){
+  .wrap{border:none}
+  header,footer{padding:14px 20px}
+  .hero{grid-template-columns:1fr;padding:36px 20px 32px;gap:24px}
+  .hero-right{align-items:flex-start}
+  .hplat-grid{flex-direction:row;flex-wrap:wrap}
+  .hplat-row{flex-direction:row}
+  .row-head{padding:0 20px;height:60px}
+  .row-hint{display:none}
+  .mbody,.mhead-body{padding:16px 20px}
+  .mbody{padding-bottom:22px}
+  #cur,#glow{display:none}
+  html,body{cursor:auto}
+  .lb,.row,.pf,.dopt,.ditem,.mx,.btn-p,.btn-s{cursor:pointer}
+}
+
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+header{animation:up 0.38s both}
+.hero{animation:up 0.38s 0.05s both}
+.row:nth-child(1){animation:up 0.38s 0.1s both}
+.row:nth-child(2){animation:up 0.38s 0.13s both}
+.row:nth-child(3){animation:up 0.38s 0.16s both}
+.row:nth-child(4){animation:up 0.38s 0.19s both}
+footer{animation:up 0.38s 0.22s both}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="glow"></div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="#">
+      <div class="lmark">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1.5 1.5v9M1.5 6h9M10.5 1.5v9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="lname">Happ</span>
+      <span class="ldot">·</span>
+      <span class="lsub" id="t-lsub">Proxy Utility</span>
+    </a>
+    <div class="langs">
+      <button class="lb on" onclick="L('ru')">RU</button>
+      <button class="lb" onclick="L('en')">EN</button>
+      <button class="lb" onclick="L('fa')">FA</button>
+      <button class="lb" onclick="L('zh')">ZH</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span class="hero-badge-text" id="t-badge">XRAY CORE · КРОССПЛАТФОРМЕННЫЙ</span>
+      </div>
+      <h1 class="hero-title"><span id="t-h1">Прокси-клиент</span> <em id="t-h2">для всех платформ</em></h1>
+      <p class="hero-desc" id="t-desc">Кроссплатформенный прокси-клиент без собственных серверов. Ваши конфигурации, ваши правила.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-plat-grid">
+        <div class="hplat-row"><span class="hplat">iOS</span><span class="hplat">macOS</span></div>
+        <div class="hplat-row"><span class="hplat">Android</span><span class="hplat">Windows</span></div>
+        <div class="hplat-row"><span class="hplat">Linux</span><span class="hplat">TV</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ROWS -->
+  <div class="actions">
+    <div class="row" onclick="openM('dl')">
+      <div class="row-head">
+        <span class="row-num">01</span>
+        <span class="row-name" id="rn-dl">Скачать</span>
+        <span class="row-hint" id="rh-dl">6 платформ</span>
+        <span class="row-arr">↗</span>
+      </div>
+    </div>
+    <div class="row" onclick="openM('doc')">
+      <div class="row-head">
+        <span class="row-num">02</span>
+        <span class="row-name" id="rn-doc">Документация</span>
+        <span class="row-hint" id="rh-doc">2 раздела</span>
+        <span class="row-arr">↗</span>
+      </div>
+    </div>
+    <div class="row" onclick="openM('sup')">
+      <div class="row-head">
+        <span class="row-num">03</span>
+        <span class="row-name" id="rn-sup">Поддержка</span>
+        <span class="row-hint" id="rh-sup">ИИ-бот · Оператор</span>
+        <span class="row-arr">↗</span>
+      </div>
+    </div>
+    <div class="row" onclick="openM('don')">
+      <div class="row-head">
+        <span class="row-num">04</span>
+        <span class="row-name" id="rn-don">Поддержать проект</span>
+        <span class="row-hint" id="rh-don">МИР · Visa · Crypto</span>
+        <span class="row-arr">↗</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="ft" id="t-ft">© 2025 Flyfrog LLC</span>
+    <div class="ft-links">
+      <a class="ft-link" href="https://t.me/happ_proxy" target="_blank">Telegram</a>
+      <a class="ft-link" href="https://github.com/Happ-proxy" target="_blank">GitHub</a>
+      <a class="ft-link" href="mailto:support@happ.su">Email</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL: DOWNLOAD -->
+<div class="ov" id="ov-dl" onclick="cls(event,'dl')">
+  <div class="modal">
+    <div class="mhead">
+      <div class="mhead-body">
+        <div class="mnum" id="mn-dl">01 — СКАЧАТЬ</div>
+        <div class="mtitle" id="mt-dl">Выберите платформу</div>
+      </div>
+      <div class="mx" onclick="closeM('dl')">✕</div>
+    </div>
+    <div class="mbody">
+      <a class="pf" href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div><div class="pf-body"><div class="pf-name">iOS</div><div class="pf-sub">APP STORE GLOBAL · RU</div></div><span class="pf-arr">↗</span></a>
+      <a class="pf" href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.macOS.universal.dmg" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div><div class="pf-body"><div class="pf-name">macOS</div><div class="pf-sub">APP STORE · DMG UNIVERSAL</div></div><span class="pf-arr">↗</span></a>
+      <a class="pf" href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M17.523 15.341a4.49 4.49 0 0 1-2.053.494 4.49 4.49 0 0 1-2.053-.494L5.86 19.172A6.985 6.985 0 0 0 12 21.5a6.985 6.985 0 0 0 6.14-2.328zM5.15 18.285l7.557-3.83A4.49 4.49 0 0 1 7.523 10a4.49 4.49 0 0 1 .677-2.376L3.34 5.19A9.96 9.96 0 0 0 2 10c0 3.13 1.44 5.93 3.15 8.285zM18.8 7.624A4.49 4.49 0 0 1 19.477 10a4.49 4.49 0 0 1-4.735 4.455l-7.557 3.83C8.813 19.435 10.35 20 12 20a9.97 9.97 0 0 0 7.84-3.785A9.96 9.96 0 0 0 22 10c0-3.13-1.44-5.93-3.2-8.285zM12 5.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 1.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></div><div class="pf-body"><div class="pf-name">Android</div><div class="pf-sub">GOOGLE PLAY · APK · BETA APK</div></div><span class="pf-arr">↗</span></a>
+      <a class="pf" href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M3 5a1 1 0 0 1 1-1h4.5a1 1 0 0 1 .707.293L10.914 6H20a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5zm2 2v8h14V8h-9.5a1 1 0 0 1-.707-.293L7.586 6H5v1z"/><path d="M3.5 3.5h5l2 2h10v13h-17V3.5z" opacity="0"/><rect x="3" y="3" width="8" height="8" rx="0"/><rect x="13" y="3" width="8" height="8" rx="0"/><rect x="3" y="13" width="8" height="8" rx="0"/><rect x="13" y="13" width="8" height="8" rx="0"/></svg></div><div class="pf-body"><div class="pf-name">Windows</div><div class="pf-sub">X64 · EXE INSTALLER</div></div><span class="pf-arr">↗</span></a>
+      <a class="pf" href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.linux.x64.deb" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" opacity="0"/><ellipse cx="12" cy="8.5" rx="4" ry="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 14c-2.5 1-4 2.5-4 4h16c0-1.5-1.5-3-4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="8.5" r="2"/><path d="M9 19v2M15 19v2M7 21h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="pf-body"><div class="pf-name">Linux</div><div class="pf-sub">DEB · RPM · PKG.TAR.ZST</div></div><span class="pf-arr">↗</span></a>
+      <a class="pf" href="https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274" target="_blank"><div class="pf-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div><div class="pf-body"><div class="pf-name">TV</div><div class="pf-sub">ANDROID TV · APPLE TV</div></div><span class="pf-arr">↗</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DOCS -->
+<div class="ov" id="ov-doc" onclick="cls(event,'doc')">
+  <div class="modal">
+    <div class="mhead">
+      <div class="mhead-body">
+        <div class="mnum" id="mn-doc">02 — ДОКУМЕНТАЦИЯ</div>
+        <div class="mtitle" id="mt-doc">Что вам нужно?</div>
+      </div>
+      <div class="mx" onclick="closeM('doc')">✕</div>
+    </div>
+    <div class="mbody">
+      <a class="dopt" href="https://www.happ.su/main/ru/faq" target="_blank">
+        <div><div class="dopt-name" id="do-u">Пользовательская документация</div><div class="dopt-sub" id="do-us">FAQ · НАЧАЛО РАБОТЫ · ИНСТРУКЦИИ</div></div>
+        <span class="dopt-arr">↗</span>
+      </a>
+      <a class="dopt" href="https://www.happ.su/main/ru/dev-docs" target="_blank">
+        <div><div class="dopt-name" id="do-d">Техническая документация</div><div class="dopt-sub" id="do-ds">API · XRAY CONFIG · SPECS</div></div>
+        <span class="dopt-arr">↗</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUPPORT -->
+<div class="ov" id="ov-sup" onclick="cls(event,'sup')">
+  <div class="modal">
+    <div class="mhead">
+      <div class="mhead-body">
+        <div class="mnum" id="mn-sup">03 — ПОДДЕРЖКА</div>
+        <div class="mtitle" id="mt-sup">Как вам помочь?</div>
+      </div>
+      <div class="mx" onclick="closeM('sup')">✕</div>
+    </div>
+    <div class="mbody">
+      <p class="mdesc" id="sd-text">Выберите удобный способ связи. Telegram-чат — для быстрых вопросов, email — для подробных обращений.</p>
+      <a class="contact-item" href="https://t.me/happ_chat" target="_blank">
+        <div class="contact-ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text2)"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        </div>
+        <div class="contact-body">
+          <div class="contact-name" id="sc-tg">Telegram-чат</div>
+          <div class="contact-sub">@HAPP_CHAT · БЫСТРЫЕ ВОПРОСЫ</div>
+        </div>
+        <span class="contact-arr">↗</span>
+      </a>
+      <a class="contact-item" href="https://t.me/happ_proxy" target="_blank">
+        <div class="contact-ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><path d="M4 4h16v12H4z"/><path d="M4 4l8 8 8-8"/></svg>
+        </div>
+        <div class="contact-body">
+          <div class="contact-name" id="sc-ch">Telegram-канал</div>
+          <div class="contact-sub">@HAPP_PROXY · НОВОСТИ И ОБНОВЛЕНИЯ</div>
+        </div>
+        <span class="contact-arr">↗</span>
+      </a>
+      <a class="contact-item" href="mailto:support@happ.su">
+        <div class="contact-ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        </div>
+        <div class="contact-body">
+          <div class="contact-name" id="sc-em">Email</div>
+          <div class="contact-sub">SUPPORT@HAPP.SU · ПОДРОБНЫЕ ОБРАЩЕНИЯ</div>
+        </div>
+        <span class="contact-arr">↗</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DONATE -->
+<div class="ov" id="ov-don" onclick="cls(event,'don')">
+  <div class="modal">
+    <div class="mhead">
+      <div class="mhead-body">
+        <div class="mnum" id="mn-don">04 — ДОНАТЫ</div>
+        <div class="mtitle" id="mt-don">Поддержать Happ</div>
+      </div>
+      <div class="mx" onclick="closeM('don')">✕</div>
+    </div>
+    <div class="mbody">
+      <p class="mdesc" id="dd-text">Мы — независимый проект. Любая сумма помогает нам оплачивать серверы и развивать продукт.</p>
+      <a class="ditem" href="https://t.me/tribute/app?startapp=dzpj" target="_blank">
+        <div class="dic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text2)"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <div class="dbody"><div class="dname" id="dc">Карты МИР / Visa</div><div class="dsub">TELEGRAM TRIBUTE</div></div>
+        <span class="darr">↗</span>
+      </a>
+      <div class="crypto-wrap">
+        <div class="crypto-row">
+          <div class="crypto-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text2);flex-shrink:0"><path d="M11.944 17.97L4.58 13.62a2 2 0 0 1 0-3.24l7.364-4.35a2 2 0 0 1 2.092 0l7.364 4.35a2 2 0 0 1 0 3.24l-7.364 4.35a2 2 0 0 1-2.092 0z"/></svg>
+            <span class="crypto-coin">USDT</span>
+            <span class="crypto-net">ETH · ARBITRUM · BSC · POLYGON</span>
+          </div>
+          <div class="crypto-addr-row">
+            <div class="crypto-addr">0x96e693e12096872ca97d115c389299688c278841</div>
+            <button class="copy-btn" onclick="copyAddr(this,'0x96e693e12096872ca97d115c389299688c278841')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="crypto-row">
+          <div class="crypto-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text2);flex-shrink:0"><path d="M11.944 17.97L4.58 13.62a2 2 0 0 1 0-3.24l7.364-4.35a2 2 0 0 1 2.092 0l7.364 4.35a2 2 0 0 1 0 3.24l-7.364 4.35a2 2 0 0 1-2.092 0z"/></svg>
+            <span class="crypto-coin">USDT</span>
+            <span class="crypto-net">TRC-20</span>
+          </div>
+          <div class="crypto-addr-row">
+            <div class="crypto-addr">TKRvqQbBaJJxjfnHufAe8DJg8pRRhG7Wmc</div>
+            <button class="copy-btn" onclick="copyAddr(this,'TKRvqQbBaJJxjfnHufAe8DJg8pRRhG7Wmc')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="crypto-row">
+          <div class="crypto-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text2);flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M9.5 8.5 L14.5 12 L9.5 15.5"/></svg>
+            <span class="crypto-coin">BTC</span>
+            <span class="crypto-net">BITCOIN</span>
+          </div>
+          <div class="crypto-addr-row">
+            <div class="crypto-addr">bc1qef33wrpdckl7jx2y43k3jxslj8mu5zt9qu09yv</div>
+            <button class="copy-btn" onclick="copyAddr(this,'bc1qef33wrpdckl7jx2y43k3jxslj8mu5zt9qu09yv')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="crypto-row">
+          <div class="crypto-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="color:var(--text2);flex-shrink:0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+            <span class="crypto-coin">TON</span>
+            <span class="crypto-net">THE OPEN NETWORK</span>
+          </div>
+          <div class="crypto-addr-row">
+            <div class="crypto-addr">UQA1uoFThzUxCgtasitznzG8EfOT7BrCPq2oifcyTqK9xDYU</div>
+            <button class="copy-btn" onclick="copyAddr(this,'UQA1uoFThzUxCgtasitznzG8EfOT7BrCPq2oifcyTqK9xDYU')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast">Адрес скопирован</div>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),gl=document.getElementById('glow');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  gl.style.left=e.clientX+'px';gl.style.top=e.clientY+'px';
+});
+
+// Platform auto-detect
+function detectPlatform(){
+  const ua=navigator.userAgent;
+  if(/iPhone|iPad|iPod/.test(ua)) return 'ios';
+  if(/Macintosh/.test(ua)) return 'macos';
+  if(/Android/.test(ua)) return 'android';
+  if(/Win/.test(ua)) return 'windows';
+  if(/Linux/.test(ua)) return 'linux';
+  return null;
+}
+function highlightPlatform(){
+  const p=detectPlatform();
+  if(!p) return;
+  const map={ios:0,macos:1,android:2,windows:3,linux:4};
+  const idx=map[p];
+  if(idx===undefined) return;
+  const rows=document.querySelectorAll('#ov-dl .pf');
+  if(rows[idx]){
+    rows[idx].classList.add('detected');
+    const badge=document.createElement('span');
+    badge.className='detected-badge';
+    badge.textContent='ваша платформа';
+    rows[idx].querySelector('.pf-name').appendChild(badge);
+    rows[idx].parentNode.insertBefore(rows[idx], rows[idx].parentNode.firstChild);
+  }
+}
+
+// Copy address
+function copyAddr(btn, addr){
+  navigator.clipboard.writeText(addr).then(()=>{
+    btn.classList.add('copied');
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    showToast('Адрес скопирован');
+    setTimeout(()=>{
+      btn.classList.remove('copied');
+      btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    }, 2000);
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// Modals
+function openM(id){
+  document.getElementById('ov-'+id).classList.add('open');
+  document.body.style.overflow='hidden';
+  if(id==='dl') setTimeout(highlightPlatform, 50);
+}
+function closeM(id){document.getElementById('ov-'+id).classList.remove('open');document.body.style.overflow=''}
+function cls(e,id){if(e.target===document.getElementById('ov-'+id))closeM(id)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['dl','doc','sup','don'].forEach(closeM)})
+
+// i18n
+const T={
+  ru:{lsub:'Proxy Utility',badge:'XRAY CORE · КРОССПЛАТФОРМЕННЫЙ',h1:'Прокси-клиент',h2:'для всех платформ',
+    desc:'Подключайся к своим прокси-серверам на любом устройстве. Без посредников, без чужих серверов.',
+    rnDl:'Скачать',rhDl:'6 платформ',rnDoc:'Документация',rhDoc:'2 раздела',
+    rnSup:'Поддержка',rhSup:'ИИ-бот · Оператор',rnDon:'Поддержать проект',rhDon:'МИР · Visa · Crypto',
+    ft:'© 2025 Flyfrog LLC',
+    mnDl:'01 — СКАЧАТЬ',mtDl:'Выберите платформу',
+    mnDoc:'02 — ДОКУМЕНТАЦИЯ',mtDoc:'Что вам нужно?',
+    doU:'Пользовательская документация',doUS:'FAQ · НАЧАЛО РАБОТЫ · ИНСТРУКЦИИ',
+    doD:'Техническая документация',doDS:'API · XRAY CONFIG · SPECS',
+    mnSup:'03 — ПОДДЕРЖКА',mtSup:'Как вам помочь?',
+    sdText:'Вы можете решить вопрос быстро и бесплатно через ИИ-бота — или обратиться за помощью к живому оператору.',
+    sb1:'Запустить ИИ-бота',sb2:'Связаться с оператором',sbBadge:'ПЛАТНО',
+    mnDon:'04 — ДОНАТЫ',mtDon:'Поддержать Happ',
+    ddText:'Мы — независимый проект. Ваше пожертвование на любую сумму помогает нам оплачивать серверы и развивать продукт. Спасибо!',
+    dc:'Карты МИР / Visa',dcr:'Криптовалюта',dir:'ltr'},
+  en:{lsub:'Proxy Utility',badge:'XRAY CORE · CROSS-PLATFORM',h1:'Proxy client',h2:'for every platform',
+    desc:'Connect to your own proxy servers on any device. No middlemen, no third-party servers.',
+    rnDl:'Download',rhDl:'6 platforms',rnDoc:'Documentation',rhDoc:'2 sections',
+    rnSup:'Support',rhSup:'AI bot · Operator',rnDon:'Support the project',rhDon:'MIR · Visa · Crypto',
+    ft:'© 2025 Flyfrog LLC',
+    mnDl:'01 — DOWNLOAD',mtDl:'Choose your platform',
+    mnDoc:'02 — DOCUMENTATION',mtDoc:'What do you need?',
+    doU:'User documentation',doUS:'FAQ · GETTING STARTED · GUIDES',
+    doD:'Technical documentation',doDS:'API · XRAY CONFIG · SPECS',
+    mnSup:'03 — SUPPORT',mtSup:'How can we help?',
+    sdText:'Resolve your issue for free with our AI bot — or contact a live operator for personal support.',
+    sb1:'Launch AI bot',sb2:'Contact operator',sbBadge:'PAID',
+    mnDon:'04 — DONATE',mtDon:'Support Happ',
+    ddText:"We're an independent project. Any donation helps us pay for servers and keep building. Thank you!",
+    dc:'Card (MIR / Visa)',dcr:'Cryptocurrency',dir:'ltr'},
+  fa:{lsub:'ابزار پروکسی',badge:'هسته XRAY · چندسکویی',h1:'کلاینت پروکسی',h2:'برای همه پلتفرم‌ها',
+    desc:'به سرورهای پروکسی خود از هر دستگاهی متصل شوید. بدون واسطه، بدون سرور شخص ثالث.',
+    rnDl:'دانلود',rhDl:'۶ پلتفرم',rnDoc:'مستندات',rhDoc:'۲ بخش',
+    rnSup:'پشتیبانی',rhSup:'ربات هوش مصنوعی · اپراتور',rnDon:'حمایت از پروژه',rhDon:'کارت · ارز دیجیتال',
+    ft:'© 2025 Flyfrog LLC',
+    mnDl:'۰۱ — دانلود',mtDl:'پلتفرم خود را انتخاب کنید',
+    mnDoc:'۰۲ — مستندات',mtDoc:'چه نیازی دارید؟',
+    doU:'مستندات کاربری',doUS:'سؤالات متداول · شروع کار · راهنما',
+    doD:'مستندات فنی',doDS:'API · XRAY CONFIG · مشخصات',
+    mnSup:'۰۳ — پشتیبانی',mtSup:'چطور کمک کنیم؟',
+    sdText:'می‌توانید مشکل خود را سریع و رایگان از طریق ربات حل کنید — یا با اپراتور تماس بگیرید.',
+    sb1:'راه‌اندازی ربات هوش مصنوعی',sb2:'تماس با اپراتور',sbBadge:'پولی',
+    mnDon:'۰۴ — کمک مالی',mtDon:'از Happ حمایت کنید',
+    ddText:'ما یک پروژه مستقل هستیم. هر مبلغی به ما کمک می‌کند سرورها را نگه داریم و محصول را توسعه دهیم.',
+    dc:'کارت بانکی (MIR / Visa)',dcr:'ارز دیجیتال',dir:'rtl'},
+  zh:{lsub:'代理工具',badge:'XRAY 核心 · 跨平台',h1:'代理客户端',h2:'支持全平台',
+    desc:'在任何设备上连接到您自己的代理服务器。无中间商，无第三方服务器。',
+    rnDl:'下载',rhDl:'6 个平台',rnDoc:'文档',rhDoc:'2 个章节',
+    rnSup:'支持',rhSup:'AI 机器人 · 客服',rnDon:'支持项目',rhDon:'银行卡 · 加密货币',
+    ft:'© 2025 Flyfrog LLC',
+    mnDl:'01 — 下载',mtDl:'选择您的平台',
+    mnDoc:'02 — 文档',mtDoc:'您需要什么？',
+    doU:'用户文档',doUS:'常见问题 · 快速入门 · 指南',
+    doD:'技术文档',doDS:'API · XRAY CONFIG · 规范',
+    mnSup:'03 — 支持',mtSup:'我们如何帮助您？',
+    sdText:'您可以通过 AI 机器人免费快速解决问题 — 或联系在线客服获得个人帮助。',
+    sb1:'启动 AI 机器人',sb2:'联系客服',sbBadge:'付费',
+    mnDon:'04 — 捐赠',mtDon:'支持 Happ',
+    ddText:'我们是独立项目。任何捐款都有助于支付服务器费用并持续开发。感谢！',
+    dc:'银行卡（MIR / Visa）',dcr:'加密货币',dir:'ltr'}
+};
+
+function L(l){
+  const t=T[l];
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.lb[onclick="L('${l}')"]`).classList.add('on');
+  document.documentElement.dir=t.dir;document.documentElement.lang=l;
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  s('t-lsub',t.lsub);s('t-badge',t.badge);s('t-h1',t.h1);s('t-h2',t.h2);s('t-desc',t.desc);
+  s('rn-dl',t.rnDl);s('rh-dl',t.rhDl);s('rn-doc',t.rnDoc);s('rh-doc',t.rhDoc);
+  s('rn-sup',t.rnSup);s('rh-sup',t.rhSup);s('rn-don',t.rnDon);s('rh-don',t.rhDon);
+  s('t-ft',t.ft);
+  s('mn-dl',t.mnDl);s('mt-dl',t.mtDl);
+  s('mn-doc',t.mnDoc);s('mt-doc',t.mtDoc);
+  s('do-u',t.doU);s('do-us',t.doUS);s('do-d',t.doD);s('do-ds',t.doDS);
+  s('mn-sup',t.mnSup);s('mt-sup',t.mtSup);s('sd-text',t.sdText);
+  s('sb1',t.sb1);s('sb2',t.sb2);s('sb-badge',t.sbBadge);
+  s('mn-don',t.mnDon);s('mt-don',t.mtDon);s('dd-text',t.ddText);
+  s('dc',t.dc);s('dcr',t.dcr);
+  ['dl','doc','sup','don'].forEach(closeM);
+}
+</script>
+</body>
+</html>
