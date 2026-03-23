@@ -1,2 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg xmlns="http://www.w3.org/2000/svg" fill="#555A75"  width="800px" height="800px" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M666.666 133.333H133.333C96.6665 133.333 66.9998 163.333 66.9998 200L66.6665 600C66.6665 636.667 96.6665 666.667 133.333 666.667H666.666C703.333 666.667 733.333 636.667 733.333 600V200C733.333 163.333 703.333 133.333 666.666 133.333ZM666.666 266.667L400 433.333L133.333 266.667V200L400 366.667L666.666 200V266.667Z" fill="#555A75"/>
+</svg>
