@@ -42,7 +42,7 @@ header{
   background:rgba(8,10,15,0.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
 }
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text)}
-.lmark{width:24px;height:24px;border-radius:6px;background:var(--purple);display:flex;align-items:center;justify-content:center}
+.lmark{width:24px;height:24px;border-radius:6px;display:block;object-fit:cover;border:1.5px solid rgba(255,255,255,0.22);flex-shrink:0}
 .lname{font-size:14px;font-weight:500;letter-spacing:-0.2px}
 .ldot{color:var(--text3);margin:0 1px}
 .lsub{font-family:var(--mono);font-size:12px;color:var(--text2);letter-spacing:0.3px}
@@ -324,11 +324,7 @@ footer{animation:up 0.38s 0.22s both}
   <!-- HEADER -->
   <header>
     <a class="logo" href="#">
-      <div class="lmark">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M1.5 1.5v9M1.5 6h9M10.5 1.5v9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <img src="logo.svg" class="lmark" alt="Happ">
       <span class="lname">Happ</span>
       <span class="ldot">·</span>
       <span class="lsub" id="t-lsub">Proxy Utility</span>
@@ -397,7 +393,7 @@ footer{animation:up 0.38s 0.22s both}
   </div>
 
   <footer>
-    <span class="ft" id="t-ft">© 2026 Flyfrog LLC · Made by Kirill Terletsky</span>
+    <span class="ft" id="t-ft">© 2026 · Made by Kirill Terletsky</span>
     <div class="ft-links">
       <a class="ft-link" href="https://t.me/happ_proxy" target="_blank">Telegram</a>
       <a class="ft-link" href="https://github.com/Happ-proxy" target="_blank">GitHub</a>
@@ -648,7 +644,7 @@ const T={
     desc:'Подключайся к своим прокси-серверам на любом устройстве. Без посредников, без чужих серверов.',
     rnDl:'Скачать',rhDl:'6 платформ',rnDoc:'Документация',rhDoc:'2 раздела',
     rnSup:'Поддержка',rhSup:'ИИ-бот · Оператор',rnDon:'Поддержать проект',rhDon:'МИР · Visa · Crypto',
-    ft:'© 2026 Flyfrog LLC · Made by Kirill Terletsky',
+    ft:'© 2026 · Made by Kirill Terletsky',
     mnDl:'01 — СКАЧАТЬ',mtDl:'Выберите платформу',
     mnDoc:'02 — ДОКУМЕНТАЦИЯ',mtDoc:'Что вам нужно?',
     doU:'Пользовательская документация',doUS:'FAQ · НАЧАЛО РАБОТЫ · ИНСТРУКЦИИ',
@@ -663,7 +659,7 @@ const T={
     desc:'Connect to your own proxy servers on any device. No middlemen, no third-party servers.',
     rnDl:'Download',rhDl:'6 platforms',rnDoc:'Documentation',rhDoc:'2 sections',
     rnSup:'Support',rhSup:'AI bot · Operator',rnDon:'Support the project',rhDon:'MIR · Visa · Crypto',
-    ft:'© 2026 Flyfrog LLC · Made by Kirill Terletsky',
+    ft:'© 2026 · Made by Kirill Terletsky',
     mnDl:'01 — DOWNLOAD',mtDl:'Choose your platform',
     mnDoc:'02 — DOCUMENTATION',mtDoc:'What do you need?',
     doU:'User documentation',doUS:'FAQ · GETTING STARTED · GUIDES',
@@ -678,7 +674,7 @@ const T={
     desc:'به سرورهای پروکسی خود از هر دستگاهی متصل شوید. بدون واسطه، بدون سرور شخص ثالث.',
     rnDl:'دانلود',rhDl:'۶ پلتفرم',rnDoc:'مستندات',rhDoc:'۲ بخش',
     rnSup:'پشتیبانی',rhSup:'ربات هوش مصنوعی · اپراتور',rnDon:'حمایت از پروژه',rhDon:'کارت · ارز دیجیتال',
-    ft:'© 2026 Flyfrog LLC · Made by Kirill Terletsky',
+    ft:'© 2026 · Made by Kirill Terletsky',
     mnDl:'۰۱ — دانلود',mtDl:'پلتفرم خود را انتخاب کنید',
     mnDoc:'۰۲ — مستندات',mtDoc:'چه نیازی دارید؟',
     doU:'مستندات کاربری',doUS:'سؤالات متداول · شروع کار · راهنما',
@@ -693,7 +689,7 @@ const T={
     desc:'在任何设备上连接到您自己的代理服务器。无中间商，无第三方服务器。',
     rnDl:'下载',rhDl:'6 个平台',rnDoc:'文档',rhDoc:'2 个章节',
     rnSup:'支持',rhSup:'AI 机器人 · 客服',rnDon:'支持项目',rhDon:'银行卡 · 加密货币',
-    ft:'© 2026 Flyfrog LLC · Made by Kirill Terletsky',
+    ft:'© 2026 · Made by Kirill Terletsky',
     mnDl:'01 — 下载',mtDl:'选择您的平台',
     mnDoc:'02 — 文档',mtDoc:'您需要什么？',
     doU:'用户文档',doUS:'常见问题 · 快速入门 · 指南',
